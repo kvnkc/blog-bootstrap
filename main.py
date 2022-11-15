@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import requests
 
 url = 'https://api.npoint.io/26c825f61288fbbd5782'
@@ -13,12 +13,17 @@ def home():
     return render_template('./index.html', posts=post_data)
 
 
-@ app.route('/contact')
+@app.route('/contact', methods=['POST', 'GET'])
 def contact():
-    return render_template('./contact.html')
+    if request.method == 'GET':
+        return render_template('./contact.html')
+    elif request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        return (f'<h1> Form for {name} {email} successfully submitted </h1>')
 
 
-@ app.route('/about')
+@app.route('/about')
 def about():
     return render_template('./about.html')
 
